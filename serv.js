@@ -16,7 +16,7 @@ const    app = express()
 // routes paths
 
 
-
+const categoryRoutes = require("./routes/category");
 
 
 // middlewares
@@ -33,6 +33,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 // routes use by make map to routes folder
+
+app.use('/api/category', categoryRoutes);
+
 
 
 

@@ -14,7 +14,7 @@ const categorySchema = new mongoose.Schema(
 
     image: {
 
-        type: String,
+       
 
         secure_url: String,
 
