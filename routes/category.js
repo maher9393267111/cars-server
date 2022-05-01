@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const {CreateCategory,getAllCategory} = require("../controllers/category");
+const {CreateCategory,
+    getAllCategory,
+    updateCategory,
+    deleteCategory,
+
+} = require("../controllers/category");
 const multer = require("multer");
 //const { loginCheck } = require("../middleware/auth");
 
@@ -23,5 +28,9 @@ router.post("/add-category",  upload.single("image"), CreateCategory);
 router.get("/get-all-category", getAllCategory);
 
 
+router.put("/update-category/:id",upload.single("image"), updateCategory);
+
+
+router.delete("/delete-category/:id", deleteCategory);
 
 module.exports = router;
