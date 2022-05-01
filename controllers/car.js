@@ -451,7 +451,7 @@ exports.deleteCar = async (req, res) => {
       }
      
 
-      
+
 
 
         //konsole images  ------------------------------------------------------
@@ -483,3 +483,7 @@ exports.deleteCar = async (req, res) => {
 
 
 }
+
+
+
+console.log("car controllerhhhhh");
