@@ -3,7 +3,8 @@ const router = express.Router();
 const {
     
     create4,
-    update4
+    update4,
+    deleteCar
     // getAllCategory,
     // updateCategory,
     // deleteCategory,
@@ -59,6 +60,9 @@ const car4upload = upload.fields([ { name: "front_images", maxCount: 5 }, { name
 
 
  router.put("/update-car4/:id", car4upload,update4);
+
+
+    router.delete("/delete-car/:id", deleteCar);
 
 
 module.exports = router;

@@ -387,3 +387,99 @@ exports.update4 = async (req, res) => {
 
   res.json({ message: "car updated successfully", carAfterUpdate });
 };
+
+
+
+
+
+// delete car by id
+
+
+exports.deleteCar = async (req, res) => {
+
+
+    const id = req.params.id;
+
+    const car = await carModel.findById(id);
+
+    // delete car images from cloudinary
+
+    for (let i = 0; i < car.outside_images.front_images.length; i++) {
+        const resp = await cloudinary.uploader.destroy(
+          car.outside_images.front_images[i].public_id,
+          (error, result) => {
+            if (error) {
+              console.log(error);
+            }
+            console.log("old front images deleted");
+          }
+        );
+      }
+    
+      // back_images  ------------------------------------------------------
+    
+      for (let i = 0; i < car.outside_images.back_images.length; i++) {
+        const resp = await cloudinary.uploader.destroy(
+          car.outside_images.back_images[i].public_id,
+          (error, result) => {
+            if (error) {
+              console.log(error);
+            }
+            //   console.log("resuuuuuuuult", result);
+            console.log("old back images deleted");
+          }
+        );
+      }
+
+
+
+      //koltuk images  ------------------------------------------------------
+
+
+      for (let i = 0; i < car.inside_images.koltuk_images.length; i++) {
+        const resp = await cloudinary.uploader.destroy(
+          car.inside_images.koltuk_images[i].public_id,
+    
+          (error, result) => {
+            if (error) {
+              console.log(error);
+            }
+            //   console.log("resuuuuuuuult", result);
+            console.log("old koltuk images deleted");
+          }
+        );
+      }
+     
+
+      
+
+
+        //konsole images  ------------------------------------------------------
+
+
+        for (let i = 0; i < car.inside_images.konsole_images.length; i++) {
+            const resp = await cloudinary.uploader.destroy(
+              car.inside_images.konsole_images[i].public_id,
+        
+              (error, result) => {
+                if (error) {
+                  console.log(error);
+                }
+        
+                console.log("old konsole images deleted");
+              }
+            );
+          }
+
+
+    // delete car from database
+
+    const deletedCar = await carModel.findByIdAndDelete(id);
+
+
+    res.status(200).json({ message: "car deleted successfully", deletedCar });
+
+
+
+
+}
