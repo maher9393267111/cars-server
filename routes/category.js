@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {CreateCategory} = require("../controllers/category");
+const {CreateCategory,getAllCategory} = require("../controllers/category");
 const multer = require("multer");
 //const { loginCheck } = require("../middleware/auth");
 
@@ -18,6 +18,9 @@ const upload = multer({ storage: storage });
 
 
 router.post("/add-category",  upload.single("image"), CreateCategory);
+
+
+router.get("/get-all-category", getAllCategory);
 
 
 
