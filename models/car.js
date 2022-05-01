@@ -18,7 +18,7 @@ const carSchema = new mongoose.Schema(
         car_id: { type: Number, required: true },
     
       
-        inside_images:[
+        inside_images:
             { 
 
                 koltuk_images:[  {secure_url : String  ,public_id:String}     ]    ,
@@ -31,11 +31,11 @@ const carSchema = new mongoose.Schema(
 
 
 
-        ]
+        
   ,  
 
 
-  
+
 outside_images:
 
 
