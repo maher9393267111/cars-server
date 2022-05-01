@@ -59,7 +59,7 @@ inside_photos:[{
 
             type: String,
     
-            default: "d",
+            default: "dd",
     
         },
 
