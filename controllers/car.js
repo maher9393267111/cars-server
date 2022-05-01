@@ -171,172 +171,239 @@ exports.createCar = async (req, res) => {
 
 // function for found image secure_url and public_id
 
+exports.create2 = async (req, res) => {
+  const folder = "cars";
+
+  const images = req.files;
+  console.log(images.length, images);
+
+  const { name, price, tittle, description, car_id, maked_at } = req.body;
+
+  const car_Array = [];
+
+  for (let i = 0; i < req.files.length; i++) {
+    console.log(i);
+
+    const resp = await cloudinary.uploader.upload(
+      req.files[i].path,
+      { use_filename: true, unique_filename: false },
+      (error, result) => {
+        if (error) {
+          console.log(error);
+        }
+        console.log(result);
+        car_Array.push({
+          secure_url: result.secure_url,
+          public_id: result.public_id,
+        });
+      }
+    );
+    // console.log(resp);
+    fs.unlinkSync(req.files[i].path);
+    //   car_Array.push(resp.secure_url);
+    console.log("---------->", car_Array);
+  }
+
+  const newData = {
+    name,
+    price,
+    tittle,
+    description,
+    car_id,
+    maked_at,
+    inside_images: car_Array, // car_Array is array inside it object inside it secure_url and public_id
+  };
+
+  // save newData in database
+
+  const newCar = new carModel(newData);
+
+  newCar.save((err, data) => {
+    if (err) {
+      res.json({
+        success: false,
+        message: "car not created",
+        error: err,
+      });
+    } else {
+      res.json({
+        success: true,
+        message: "car created",
+        data: data,
+      });
+    }
+  });
+};
+
+exports.create3 = async (req, res) => {
+  const folder = "cars3";
+
+  const images = req.files;
+
+  console.log(images);
+  console.log(images.front_images.length);
+
+  const { name, price, tittle, description, car_id, maked_at } = req.body;
+  console.log(name, price, tittle, description, car_id, maked_at);
+
+  const car_Array = [];
+
+  for (let i = 0; i < req.files.front_images.length; i++) {
+    const number = i + 1;
+    console.log(number, "------------------->");
+  }
+
+  for (let i = 0; i < req.files.front_images.length; i++) {
+    console.log(i + "front_images looop -->", req.files.front_images[i]);
+
+    const resp = await cloudinary.uploader.upload(
+      req.files.front_images[i].path,
+      { use_filename: true, unique_filename: false },
+      (error, result) => {
+        if (error) {
+          console.log(error);
+        }
+        console.log("resuuuuuuuult", result);
+        car_Array.push({
+          secure_url: result.secure_url,
+          public_id: result.public_id,
+        });
+      }
+    );
+  }
+
+  console.log("car_Array", car_Array);
+
+  const newData = {
+    name,
+    price,
+    tittle,
+    description,
+    car_id,
+    maked_at,
+    outside_images: [{ front_images: car_Array }],
+  };
+
+  // save newData in database
+
+  const newCar = new carModel(newData);
+
+  newCar.save((err, data) => {
+    if (err) {
+      res.json({
+        success: false,
+        message: "car not created",
+        error: err,
+      });
+    } else {
+      res.json({
+        success: true,
+        message: "car created",
+        data,
+      });
+    }
+  });
+};
 
 
-exports.create2 = async(req,res) => {
 
-    const folder = "cars";
-
+exports.create4 = async (req, res) => {
+    const folder = "cars4";
+  
     const images = req.files;
-    console.log(images.length,images);
+  
+    console.log(images);
+    console.log(images.front_images.length);
+  
+    const { name, price, tittle, description, car_id, maked_at } = req.body;
+    console.log(name, price, tittle, description, car_id, maked_at);
+  
+    const front_Array = [];
+    const back_Array = [];
+  
+    // front_images
+  
+    for (let i = 0; i < req.files.front_images.length; i++) {
+      console.log(i + "front_images looop -->", req.files.front_images[i]);
+  
+      const resp = await cloudinary.uploader.upload(
+        req.files.front_images[i].path,
+        { use_filename: true, unique_filename: false },
+        (error, result) => {
+          if (error) {
+            console.log(error);
+          }
+        //  console.log("resuuuuuuuult", result);
+          front_Array.push({
+            secure_url: result.secure_url,
+            public_id: result.public_id,
+          });
+        }
+      );
+    }
+  
 
-    const {name,price,tittle,description,car_id,maked_at} = req.body;
+    // back_images  ------------------------------------------------------
 
-    const car_Array = [];
 
-    for (let i = 0; i < req.files.length; i++) {
-         console.log(i);
-      
+    for (let i = 0; i < req.files.back_images.length; i++) {
+        console.log(i + "front_images looop -->", req.files.back_images[i]);
+    
         const resp = await cloudinary.uploader.upload(
-          req.files[i].path,
+          req.files.back_images[i].path,
           { use_filename: true, unique_filename: false },
-            (error, result) => {
-if (error) {
-  console.log(error);
-}
-                console.log(result);
-                car_Array.push({
-                    secure_url: result.secure_url,
-                    public_id: result.public_id,
-                });
+          (error, result) => {
+            if (error) {
+              console.log(error);
             }
+         //   console.log("resuuuuuuuult", result);
+            back_Array.push({
+              secure_url: result.secure_url,
+              public_id: result.public_id,
+            });
+          }
         );
-        // console.log(resp);
-        fs.unlinkSync(req.files[i].path);
-     //   car_Array.push(resp.secure_url);
-        console.log('---------->',car_Array);
       }
 
 
-const newData = {
 
-    name,
-    price,
-    tittle,
-    description,
-    car_id,
-    maked_at,
-    inside_images: car_Array,  // car_Array is array inside it object inside it secure_url and public_id
+
+
+
+// end back images  ------------------------------------------------------
+
+
+
+    console.log("car_Array",'------------------->',back_Array);
+  
+    const newData = {
+      name,
+      price,
+      tittle,
+      description,
+      car_id,
+      maked_at,
+      outside_images: {  front_imagesf: front_Array ,  back_imagesb: back_Array },
     };
-
+  
     // save newData in database
-
+  
     const newCar = new carModel(newData);
-
+  
     newCar.save((err, data) => {
+      if (err) {
+        res.json({
+          success: false,
+          message: "car not created",
+          error: err,
+        });
+      } else {
+        res.json({
+          success: true,
+          message: "car created",
+          data,
+        });
+      }
+    });
+  };
 
-        if (err) {
-            res.json({
-                success: false,
-                message: "car not created",
-                error: err,
-            });
-        } else {
-            res.json({
-                success: true,
-                message: "car created",
-                data: data,
-            });
-        }
-    }
-
-    );
-
-
-
-}
-
-
-
-
-
-
-exports.create3 = async(req,res) => {
-
-    const folder = "cars3";
-
-    const images = req.files;
-
-    console.log(images);
-    console.log(images.front_images.length);
-
-    const {name,price,tittle,description,car_id,maked_at} = req.body;
-    console.log(name,price,tittle,description,car_id,maked_at);
-
-    const car_Array = [];
-
-
-    for (let i = 0; i < req.files.front_images.length; i++) {
-
-const number = i+1;
-console.log(number,'------------------->');
-
-    }
-
-   
-    for (let i = 0; i < req.files.front_images.length; i++) {
-        console.log(i + "front_images looop -->",req.files.front_images[i]);
-     
-
-
-       const resp = await cloudinary.uploader.upload(
-         req.files.front_images[i].path,
-         { use_filename: true, unique_filename: false },
-           (error, result) => {
-if (error) {
- console.log(error);
-}
-               console.log('resuuuuuuuult',result);
-               car_Array.push({
-                   secure_url: result.secure_url,
-                   public_id: result.public_id,
-               });
-           }
-       );
-       
-       
-     }
-
-
-//res.json({ car_Array });
-
-
-
-
-const newData = {
-
-    name,
-    price,
-    tittle,
-    description,
-    car_id,
-    maked_at,
-    outside_images: [ {front_images :car_Array}]
-    };
-
-    // save newData in database
-
-    const newCar = new carModel(newData);
-
-    newCar.save((err, data) => {
-
-        if (err) {
-            res.json({
-                success: false,
-                message: "car not created",
-                error: err,
-            });
-        } else {
-            res.json({
-                success: true,
-                message: "car created",
-                data,
-            });
-        }
-    }
-
-    );
-
-
-
-}

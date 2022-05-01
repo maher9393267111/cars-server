@@ -27,15 +27,24 @@ const carSchema = new mongoose.Schema(
     }
         ]
   ,  
-outside_images:[
+outside_images:
+//[
 
-// outside_images:  [   front_images  : front_Array,]
+{ 
 
-{ front_images:[  {secure_url : String  ,public_id:String}     ]    }
+     back_imagesb:[  {secure_url : String  ,public_id:String}     ]    ,
 
 
+ front_imagesf:[  {secure_url : String  ,public_id:String}     ]    ,
 
-],
+
+}
+
+
+//]
+
+
+,
 
 
     
