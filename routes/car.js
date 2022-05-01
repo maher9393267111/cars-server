@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const {createCar,
-    create2,
-    create3,
+const {
+    
     create4,
     // getAllCategory,
     // updateCategory,
@@ -38,24 +37,21 @@ const uploadImages = upload.fields([ { name: "ko_images", maxCount: 5 }, { name:
 
 // create car 3
 
-const car3upload = upload.fields([ { name: "front_images", maxCount: 5 }, { name: "konsol_images", maxCount: 5 },]);
 
 
-const car4upload = upload.fields([ { name: "front_images", maxCount: 5 }, { name: "back_images", maxCount: 5 },]);
+const car4upload = upload.fields([ { name: "front_images", maxCount: 5 }, { name: "back_images", maxCount: 5 },
+{ name: "koltuk_images", maxCount: 5 },
+{ name: "konsole_images", maxCount: 5 }
 
 
-
-router.post("/add-car", uploadImages  ,createCar);
-
-
-
-// add-prcctice 
-
- router.post("/add-car2", upload.array('carimages')  ,create2);
+]);
 
 
 
- router.post("/add-car3", car3upload,create3);
+
+
+
+
 
  router.post("/add-car4", car4upload,create4);
 

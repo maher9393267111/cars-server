@@ -19,29 +19,37 @@ const carSchema = new mongoose.Schema(
     
       
         inside_images:[
-    {
-    
-    
-            secure_url:{type:String},
-            public_id:{type:String}
-    }
+            { 
+
+                koltuk_images:[  {secure_url : String  ,public_id:String}     ]    ,
+           
+           
+            konsole_images:[  {secure_url : String  ,public_id:String}     ]    ,
+           
+           
+           }
+
+
+
         ]
   ,  
+
+
+  
 outside_images:
-//[
+
 
 { 
 
-     back_imagesb:[  {secure_url : String  ,public_id:String}     ]    ,
+     back_images:[  {secure_url : String  ,public_id:String}     ]    ,
 
 
- front_imagesf:[  {secure_url : String  ,public_id:String}     ]    ,
+ front_images:[  {secure_url : String  ,public_id:String}     ]    ,
 
 
 }
 
 
-//]
 
 
 ,
