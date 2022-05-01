@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const {createCar,
-    create2
+    create2,
+    create3,
     // getAllCategory,
     // updateCategory,
     // deleteCategory,
@@ -27,10 +28,18 @@ const upload = multer({ storage: storage });
 
 const uploadImages = upload.fields([ { name: "ko_images", maxCount: 5 }, { name: "konsol_images", maxCount: 5 },
 
+
 { name: "front_images", maxCount: 5 } ,{name:'back_images',maxCount:5}
 
 
 ]);
+
+
+// create car 3
+
+const car3upload = upload.fields([ { name: "front_images", maxCount: 5 }, { name: "konsol_images", maxCount: 5 },]);
+
+
 
 
 
@@ -44,7 +53,9 @@ router.post("/add-car", uploadImages  ,createCar);
 
 
 
- 
+ router.post("/add-car3", car3upload,create3);
+
+
 
 
 module.exports = router;
