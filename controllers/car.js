@@ -586,3 +586,18 @@ console.log("body", body);
 
 // find all cars
 
+exports.getAllCars = async (req, res) => {
+  try{
+    const cars = await carModel.find().select("name price");
+
+    res.json({ cars });
+
+  }
+catch(err){
+  console.log(err.message);
+}
+
+
+  
+}
+
