@@ -1,7 +1,9 @@
 const carModel = require("../models/car");
 const cloudinary = require("../helpers/cloudinary");
+const categoryModel = require("../models/category");
 
 const fs = require("fs");
+const { query } = require("express");
 // found     image by his array from cloudinary
 
 // create car
@@ -27,21 +29,37 @@ exports.create4 = async (req, res) => {
     description,
     car_id,
     maked_at,
+    cat_name
   } = req.body;
-  console.log(
-    name,
-    satici_name,
-    city,
-    yakit_tipi,
-    mesafe,
-    category,
+  // console.log(
+  //   name,
+  //   satici_name,
+  //   city,
+  //   yakit_tipi,
+  //   mesafe,
+  //   category,
 
-    price,
-    tittle,
-    description,
-    car_id,
-    maked_at
-  );
+  //   price,
+  //   tittle,
+  //   description,
+  //   car_id,
+  //   maked_at
+  // );
+
+
+  // find category by id
+
+
+console.log("category", category);
+
+
+// if category is mongodb id object show console.log(category.id) istrue
+
+
+
+  const category_id = await categoryModel.findById(category);
+
+  console.log("category_id---------------------------->", category_id);
 
   const front_Array = [];
   const back_Array = [];
@@ -636,3 +654,45 @@ console.log("body", body);
     res.json({ cars });
   }
 }
+
+
+
+// FIND CAR BY SEARCH METHOD MONGODB
+
+exports.handleQuery = async (req, res) => {
+
+// req.query.query have array of query
+
+
+
+
+
+  const searchQuery = req.query.search 
+  
+
+  console.log("searchQuery", searchQuery);
+
+  
+// find by  $or
+
+const cars = await carModel.find({$or : [ {name : {$regex : searchQuery, $options : "i"}},   {city : {$regex : searchQuery, $options : "i"}}]}).select("name ");
+
+
+  
+
+
+    res.json({ cars });
+  
+
+
+
+
+
+
+};
+
+
+
+
+
+

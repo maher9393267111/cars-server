@@ -1,4 +1,4 @@
-console.log('Hello da');
+
 
 const path = require('path')
 const express = require("express");
@@ -53,6 +53,7 @@ app.use('/api/car', carRoutes);
 mongoose
     .connect(process.env.MONGODB_URL, {
         useNewUrlParser: true,
+        useUnifiedTopology: true,
      
     })
     .then(() => console.log('DB Connected'));

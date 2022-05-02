@@ -8,11 +8,15 @@ const carSchema = new mongoose.Schema(
           required: "Name is required",
           minlength: [2, "Too short"],
           maxlength: [32, "Too long"],
+         
+         
+      text: true,
+       //   index: true,
         },
     
         price: { type: Number },
-        tittle: { type: String },
-        description: { type: String },
+        tittle: { type: String,text: true, },
+        description: { type: String,text: true, },
         maked_at: { type: Date, default: Date.now },
     
         car_id: { type: Number, required: true },
@@ -66,6 +70,8 @@ creted_at: { type: Date, default: Date.now },
 city: { type: String },
 
 satici_name: { type: String },
+
+cat_name: { type: String },
 
 
 

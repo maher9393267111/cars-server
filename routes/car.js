@@ -10,7 +10,8 @@ const {
     searchCarBy,
     searchCarByPriceRange ,
     getAllCars,
-    searchCarByCity
+    searchCarByCity,
+    handleQuery,
     // getAllCategory,
     // updateCategory,
     // deleteCategory,
@@ -62,7 +63,7 @@ const car4upload = upload.fields([ { name: "front_images", maxCount: 5 }, { name
 
 
 
- router.post("/add-car4", car4upload,create4);
+ router.post("/add-car", car4upload,create4);
 
 
  router.put("/update-car4/:id", car4upload,update4);
@@ -105,6 +106,17 @@ router.get("/get-all-cars", getAllCars);
 router.post("/search-car-by-city", searchCarByCity);
 
 //router.get("/search-car-by-city/:city", searchCarByCity);
+
+
+
+
+
+// search cars by query text method
+
+router.post("/search-car-by-query", handleQuery);
+
+
+
 
 
 
