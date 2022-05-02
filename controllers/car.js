@@ -519,3 +519,26 @@ exports.searchCarByCategoryId = async (req, res) => {
 }
 
 
+
+
+// search car by  his name regex  
+
+exports.searchCarByName = async (req, res) => {
+
+
+  const name = req.params.name;
+  console.log("name", name);
+
+
+  // regex search name
+
+  const cars = await carModel.find({name: { $regex: name, $options: 'i' } }).select('name');
+
+
+
+
+  res.json({ cars });
+
+
+}
+

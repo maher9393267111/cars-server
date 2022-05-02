@@ -5,7 +5,8 @@ const {
     create4,
     update4,
     deleteCar,
-    searchCarByCategoryId
+    searchCarByCategoryId,
+    searchCarByName
     // getAllCategory,
     // updateCategory,
     // deleteCategory,
@@ -68,6 +69,12 @@ const car4upload = upload.fields([ { name: "front_images", maxCount: 5 }, { name
 // find car by category id
 
 router.get("/search-car-by-category-id/:id", searchCarByCategoryId);
+
+
+
+// find car by name in params name
+
+router.get("/search-car-by-name/:name", searchCarByName);
 
 
 module.exports = router;
