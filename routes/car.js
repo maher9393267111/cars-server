@@ -4,7 +4,8 @@ const {
     
     create4,
     update4,
-    deleteCar
+    deleteCar,
+    searchCarByCategoryId
     // getAllCategory,
     // updateCategory,
     // deleteCategory,
@@ -37,7 +38,7 @@ const uploadImages = upload.fields([ { name: "ko_images", maxCount: 5 }, { name:
 ]);
 
 
-// create car direct
+// create car 32323
 
 
 
@@ -63,6 +64,10 @@ const car4upload = upload.fields([ { name: "front_images", maxCount: 5 }, { name
 
 
     router.delete("/delete-car/:id", deleteCar);
+
+// find car by category id
+
+router.get("/search-car-by-category-id/:id", searchCarByCategoryId);
 
 
 module.exports = router;

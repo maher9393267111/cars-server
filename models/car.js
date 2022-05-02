@@ -55,6 +55,22 @@ outside_images:
 ,
 
 
+category: { type: mongoose.Schema.ObjectId, ref: "Category" },
+
+
+yakit_tipi: { type: String },
+
+mesafe: { type: String },
+
+creted_at: { type: Date, default: Date.now },
+city: { type: String },
+
+satici_name: { type: String },
+
+
+
+
+
     
     
         

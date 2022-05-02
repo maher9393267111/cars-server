@@ -14,8 +14,34 @@ exports.create4 = async (req, res) => {
   console.log(images);
   console.log(images.front_images.length);
 
-  const { name, price, tittle, description, car_id, maked_at } = req.body;
-  console.log(name, price, tittle, description, car_id, maked_at);
+  const {
+    name,
+    satici_name,
+    city,
+    yakit_tipi,
+    mesafe,
+    category,
+
+    price,
+    tittle,
+    description,
+    car_id,
+    maked_at,
+  } = req.body;
+  console.log(
+    name,
+    satici_name,
+    city,
+    yakit_tipi,
+    mesafe,
+    category,
+
+    price,
+    tittle,
+    description,
+    car_id,
+    maked_at
+  );
 
   const front_Array = [];
   const back_Array = [];
@@ -128,6 +154,11 @@ exports.create4 = async (req, res) => {
     name,
     price,
     tittle,
+    satici_name,
+    city,
+    yakit_tipi,
+    mesafe,
+    category,
     description,
     car_id,
     maked_at,
@@ -388,102 +419,103 @@ exports.update4 = async (req, res) => {
   res.json({ message: "car updated successfully", carAfterUpdate });
 };
 
-
-
-
-
 // delete car by id
 
-
 exports.deleteCar = async (req, res) => {
+  const id = req.params.id;
 
+  const car = await carModel.findById(id);
 
-    const id = req.params.id;
+  // delete car images from cloudinary
 
-    const car = await carModel.findById(id);
-
-    // delete car images from cloudinary
-
-    for (let i = 0; i < car.outside_images.front_images.length; i++) {
-        const resp = await cloudinary.uploader.destroy(
-          car.outside_images.front_images[i].public_id,
-          (error, result) => {
-            if (error) {
-              console.log(error);
-            }
-            console.log("old front images deleted");
-          }
-        );
+  for (let i = 0; i < car.outside_images.front_images.length; i++) {
+    const resp = await cloudinary.uploader.destroy(
+      car.outside_images.front_images[i].public_id,
+      (error, result) => {
+        if (error) {
+          console.log(error);
+        }
+        console.log("old front images deleted");
       }
-    
-      // back_images  ------------------------------------------------------
-    
-      for (let i = 0; i < car.outside_images.back_images.length; i++) {
-        const resp = await cloudinary.uploader.destroy(
-          car.outside_images.back_images[i].public_id,
-          (error, result) => {
-            if (error) {
-              console.log(error);
-            }
-            //   console.log("resuuuuuuuult", result);
-            console.log("old back images deleted");
-          }
-        );
+    );
+  }
+
+  // back_images  ------------------------------------------------------
+
+  for (let i = 0; i < car.outside_images.back_images.length; i++) {
+    const resp = await cloudinary.uploader.destroy(
+      car.outside_images.back_images[i].public_id,
+      (error, result) => {
+        if (error) {
+          console.log(error);
+        }
+        //   console.log("resuuuuuuuult", result);
+        console.log("old back images deleted");
       }
+    );
+  }
 
+  //koltuk images  ------------------------------------------------------
 
+  for (let i = 0; i < car.inside_images.koltuk_images.length; i++) {
+    const resp = await cloudinary.uploader.destroy(
+      car.inside_images.koltuk_images[i].public_id,
 
-      //koltuk images  ------------------------------------------------------
-
-
-      for (let i = 0; i < car.inside_images.koltuk_images.length; i++) {
-        const resp = await cloudinary.uploader.destroy(
-          car.inside_images.koltuk_images[i].public_id,
-    
-          (error, result) => {
-            if (error) {
-              console.log(error);
-            }
-            //   console.log("resuuuuuuuult", result);
-            console.log("old koltuk images deleted");
-          }
-        );
+      (error, result) => {
+        if (error) {
+          console.log(error);
+        }
+        //   console.log("resuuuuuuuult", result);
+        console.log("old koltuk images deleted");
       }
-     
+    );
+  }
+
+  //konsole images  ------------------------------------------------------
+
+  for (let i = 0; i < car.inside_images.konsole_images.length; i++) {
+    const resp = await cloudinary.uploader.destroy(
+      car.inside_images.konsole_images[i].public_id,
+
+      (error, result) => {
+        if (error) {
+          console.log(error);
+        }
+
+        console.log("old konsole images deleted");
+      }
+    );
+  }
+
+  // delete car from database
+
+  const deletedCar = await carModel.findByIdAndDelete(id);
+
+  res.status(200).json({ message: "car deleted successfully", deletedCar });
+};
+
+console.log("car controllerhhhhh");
 
 
 
 
-        //konsole images  ------------------------------------------------------
+// search car by  category id
 
 
-        for (let i = 0; i < car.inside_images.konsole_images.length; i++) {
-            const resp = await cloudinary.uploader.destroy(
-              car.inside_images.konsole_images[i].public_id,
-        
-              (error, result) => {
-                if (error) {
-                  console.log(error);
-                }
-        
-                console.log("old konsole images deleted");
-              }
-            );
-          }
+exports.searchCarByCategoryId = async (req, res) => {
 
 
-    // delete car from database
-
-    const deletedCar = await carModel.findByIdAndDelete(id);
-
-
-    res.status(200).json({ message: "car deleted successfully", deletedCar });
+  const category_id = req.params.id;
+  console.log("category_id", category_id);
 
 
+  // find only cars that have category_id
 
+  const cars = await carModel.find({category:category_id}).select('name');
 
+  
+
+  res.json({ cars });
 }
 
 
-
-console.log("car controllerhhhhh");
