@@ -6,7 +6,8 @@ const {
     update4,
     deleteCar,
     searchCarByCategoryId,
-    searchCarByName
+    searchCarByName,
+    searchCarBy
     // getAllCategory,
     // updateCategory,
     // deleteCategory,
@@ -72,9 +73,15 @@ router.get("/search-car-by-category-id/:id", searchCarByCategoryId);
 
 
 
-// find car by name in params name
+// find car by name in body name or price body
 
-router.get("/search-car-by-name/:name", searchCarByName);
+router.post("/search-car-by", searchCarBy);
+
+
+
+
+// search by name params regex  
+router.get("/search-car-by-name/:name ", searchCarByName);
 
 
 module.exports = router;

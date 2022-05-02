@@ -496,49 +496,68 @@ exports.deleteCar = async (req, res) => {
 
 console.log("car controllerhhhhh");
 
-
-
-
 // search car by  category id
 
-
 exports.searchCarByCategoryId = async (req, res) => {
-
-
   const category_id = req.params.id;
   console.log("category_id", category_id);
 
-
   // find only cars that have category_id
 
-  const cars = await carModel.find({category:category_id}).select('name');
-
-  
+  const cars = await carModel.find({ category: category_id }).select("name");
 
   res.json({ cars });
-}
+};
 
-
-
-
-// search car by  his name regex  
+// search car by  his name regex
 
 exports.searchCarByName = async (req, res) => {
-
-
   const name = req.params.name;
-  console.log("name", name);
-
+  //console.log("name", name);
 
   // regex search name
 
-  const cars = await carModel.find({name: { $regex: name, $options: 'i' } }).select('name');
+  if (name) {
+    const cars = await carModel
+      .find({ name: { $regex: name, $options: "i" } })
+      .select("name");
+    res.json({ cars });
+  }
+};
+
+// search from body
+
+exports.searchCarBy = async (req, res) => {
+ 
+  
+  const body = req.body;
+
+if (body.name) {
+  const cars = await carModel
+    .find({ name: { $regex: body.name, $options: "i" } })
+    .select("name price");
+  res.json({ cars });
+}
+  
+
+if (body.price) {
+
+// convert price to number
 
 
+  const price = parseInt(body.price);
+  console.log("price", price);
 
+  // regex search price as a number
+
+
+  const cars = await carModel
+
+    .find({price : {$eq : body.price}})   // $gt well show cars have greater than price
+
+    .select("name price");
 
   res.json({ cars });
 
-
 }
-
+};
