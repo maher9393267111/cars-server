@@ -29,7 +29,7 @@ exports.create4 = async (req, res) => {
     description,
     car_id,
     maked_at,
-    cat_name
+    cat_name,
   } = req.body;
   // console.log(
   //   name,
@@ -46,16 +46,11 @@ exports.create4 = async (req, res) => {
   //   maked_at
   // );
 
-
   // find category by id
 
+  console.log("category", category);
 
-console.log("category", category);
-
-
-// if category is mongodb id object show console.log(category.id) istrue
-
-
+  // if category is mongodb id object show console.log(category.id) istrue
 
   const category_id = await categoryModel.findById(category);
 
@@ -546,153 +541,122 @@ exports.searchCarByName = async (req, res) => {
 // search from body
 
 exports.searchCarBy = async (req, res) => {
- 
-  
   const body = req.body;
 
-if (body.name) {
-  const cars = await carModel
-    .find({ name: { $regex: body.name, $options: "i" } })
-    .select("name price");
-  res.json({ cars });
-}
-  
+  if (body.name) {
+    const cars = await carModel
+      .find({ name: { $regex: body.name, $options: "i" } })
+      .select("name price");
+    res.json({ cars });
+  }
 
-if (body.price) {
+  if (body.price) {
+    // convert price to number
 
-// convert price to number
+    const price = parseInt(body.price);
+    console.log("price", price);
 
+    // regex search price as a number
 
-  const price = parseInt(body.price);
-  console.log("price", price);
+    const cars = await carModel
 
-  // regex search price as a number
+      .find({ price: { $eq: body.price } }) // $gt well show cars have greater than price
 
+      .select("name price");
 
-  const cars = await carModel
-
-    .find({price : {$eq : body.price}})   // $gt well show cars have greater than price
-
-    .select("name price");
-
-  res.json({ cars });
-
-}
+    res.json({ cars });
+  }
 };
-
-
-
-
 
 // seach betwwen two price
 
-
 exports.searchCarByPriceRange = async (req, res) => {
-
-
   const body = req.body;
-console.log("body", body);
+  console.log("body", body);
   if (body.price_min && body.price_max) {
     const cars = await carModel
       .find({ price: { $gte: body.price_min, $lte: body.price_max } })
       .select("name price");
     res.json({ cars });
   }
-}
-
-
+};
 
 // find all cars
 
 exports.getAllCars = async (req, res) => {
-  try{
+  try {
     const cars = await carModel.find().select("name price maket_at");
 
     res.json({ cars });
-
+  } catch (err) {
+    console.log(err.message);
   }
-catch(err){
-  console.log(err.message);
-}
-
-
-  
-}
-
-
+};
 
 // find car by make_at
 
-
 exports.searchCarByMakeAt = async (req, res) => {
-
-
   const body = req.body;
-console.log("body", body);
+  console.log("body", body);
   if (body.maked_at) {
     const cars = await carModel
       .find({ maked_at: { $gte: body.maked_at, $lte: body.maked_at } })
       .select("name price");
     res.json({ cars });
   }
-}
-
-
+};
 
 // find car  by city
 
-
 exports.searchCarByCity = async (req, res) => {
-
-
   const body = req.body;
-console.log("body", body);
+  console.log("body", body);
   if (body.city) {
     const cars = await carModel
       .find({ city: { $regex: body.city, $options: "i" } })
       .select("name price city");
     res.json({ cars });
   }
-}
-
-
+};
 
 // FIND CAR BY SEARCH METHOD MONGODB
 
 exports.handleQuery = async (req, res) => {
+  // req.query.query have array of query
 
-// req.query.query have array of query
+  const searchQuery = req.query.search;
+
+  const searchCity = req.query.city ? req.query.city : "city is null maher";
+
+  console.log("searchcity", searchCity);
 
 
 
 
-
-  const searchQuery = req.query.search 
   
 
   console.log("searchQuery", searchQuery);
 
-  
-// find by  $or
+  // find by  $or
 
-const cars = await carModel.find({$or : [ {name : {$regex : searchQuery, $options : "i"}},   {city : {$regex : searchQuery, $options : "i"}}]}).select("name ");
-
-
-  
-
-
-    res.json({ cars });
-  
-
+  const cars = await carModel
+    .find({
+      $or: [
+        { name: { $regex: searchQuery, $options: "i" } },
+        { city: { $regex: searchQuery, $options: "i" } },
+      ],
+    })
+    .select("name ");
 
 
+// car must have city and name to be shown
+
+//-------------- $and -------------------------- city and name must be there
+// http://localhost:5000/api/car/search-car-by-query?search=ren&&city=istanbul
+
+const carbyNameAndCity = await carModel.find({ $and : [{city : {$regex : searchCity, $options : "i"}}, {name : {$regex : searchQuery, $options : "i"}}]})
 
 
 
+  res.json({ carbyNameAndCity });
 };
-
-
-
-
-
-
