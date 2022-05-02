@@ -588,7 +588,7 @@ console.log("body", body);
 
 exports.getAllCars = async (req, res) => {
   try{
-    const cars = await carModel.find().select("name price");
+    const cars = await carModel.find().select("name price maket_at");
 
     res.json({ cars });
 
@@ -601,3 +601,38 @@ catch(err){
   
 }
 
+
+
+// find car by make_at
+
+
+exports.searchCarByMakeAt = async (req, res) => {
+
+
+  const body = req.body;
+console.log("body", body);
+  if (body.maked_at) {
+    const cars = await carModel
+      .find({ maked_at: { $gte: body.maked_at, $lte: body.maked_at } })
+      .select("name price");
+    res.json({ cars });
+  }
+}
+
+
+
+// find car  by city
+
+
+exports.searchCarByCity = async (req, res) => {
+
+
+  const body = req.body;
+console.log("body", body);
+  if (body.city) {
+    const cars = await carModel
+      .find({ city: { $regex: body.city, $options: "i" } })
+      .select("name price city");
+    res.json({ cars });
+  }
+}

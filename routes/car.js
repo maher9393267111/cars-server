@@ -9,7 +9,8 @@ const {
     searchCarByName,
     searchCarBy,
     searchCarByPriceRange ,
-    getAllCars
+    getAllCars,
+    searchCarByCity
     // getAllCategory,
     // updateCategory,
     // deleteCategory,
@@ -96,5 +97,15 @@ router.post("/search-car-by-price-range", searchCarByPriceRange);
 // ger all cars
 
 router.get("/get-all-cars", getAllCars);
+
+
+
+
+// find cars by city
+router.post("/search-car-by-city", searchCarByCity);
+
+//router.get("/search-car-by-city/:city", searchCarByCity);
+
+
 
 module.exports = router;
