@@ -561,3 +561,28 @@ if (body.price) {
 
 }
 };
+
+
+
+
+
+// seach betwwen two price
+
+
+exports.searchCarByPriceRange = async (req, res) => {
+
+
+  const body = req.body;
+console.log("body", body);
+  if (body.price_min && body.price_max) {
+    const cars = await carModel
+      .find({ price: { $gte: body.price_min, $lte: body.price_max } })
+      .select("name price");
+    res.json({ cars });
+  }
+}
+
+
+
+// find all cars
+
