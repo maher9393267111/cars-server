@@ -660,3 +660,177 @@ const carbyNameAndCity = await carModel.find({ $and : [{city : {$regex : searchC
 
   res.json({ carbyNameAndCity });
 };
+
+
+
+
+exports.handleQuery = async (req, res) => {
+  // req.query.query have array of query
+  //  if req.query.query.city empty then find cars by name
+
+  const searchQuery = req.query.search ? req.query.search : "";
+
+  const searchCity = req.query.city ? req.query.city : "";
+
+  console.log("searchcity", searchCity);
+
+  // car must have city and name to be shown
+
+  //-------------- $and -------------------------- city and name must be there
+  // http://localhost:5000/api/car/search-car-by-query?search=ren&&city=istanbul
+
+  const carbyNameAndCity = await carModel
+    .find({
+      $and: [
+        { city: { $regex: searchCity, $options: "i" } },
+        { name: { $regex: searchQuery, $options: "i" } },
+      ],
+    })
+    .select("name city");
+
+  res.json({ carbyNameAndCity });
+};
+
+// find by cat_name to car  hhhhhhhhhhh
+
+exports.searchCarByArray = async (req, res) => {
+  // we have array of checked checkboxes when checked send array of checked checkboxes
+
+  const checked = req.body.checked;
+
+  [""];
+
+  console.log("checked", checked);
+
+  // fin all cars then filtered by checked array
+
+  const cars = await carModel.find().select("name price cat_name");
+
+  // find only where checked array each item equal car.cat_name
+
+  const filteredCars = cars.filter((car) => checked.includes(car.cat_name));
+
+  const checkedFilter = cars.filter((car) => {
+    car.cat_name === "fiat";
+  });
+
+  console.log("checkedFilter", filteredCars);
+
+  res.json({ filteredCars });
+};
+
+//skip limit  paginate cars
+
+exports.showCars = async (req, res) => {
+  console.log("req.query.page", req.query);
+
+  const skip = req.query.skip ? parseInt(req.query.skip) : 0;
+  const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+
+  const cars = await carModel
+    .find()
+    .skip(skip)
+    .limit(limit)
+    .select("name price cat_name");
+
+  res.json({ cars });
+};
+
+//{filter}
+
+exports.findFilter = async (req, res) => {
+  const filtering = {};
+
+  //   const names =[]
+  //   if (req.query.name) {
+
+'maher branch'
+
+  // // push names to array
+
+  // names.push(req.query.name)
+  // console.log(names)
+
+  //   }
+
+  const filtered = carModel.find(name);
+  if (!filtered) {
+    res.status(404).json({
+      status: 404,
+      message: "Products not found",
+    });
+  }
+  res.status(200).json(filtered);
+};
+
+
+
+// find cars by category id
+
+
+exports.findcarbyCatId = async (req, res) => {
+
+  const cat_id = req.params.cat_id;
+
+  console.log("cat_id", cat_id);
+
+  const cars = await carModel.find({  cat_id: cat_id }).select("name price").populate('category', 'name');
+
+  res.json({ cars });
+}
+
+
+//find cars by his id
+
+exports.findCarById = async (req, res) => {
+  const car_id = req.params.car_id;
+  console.log("carrrrr_id", car_id);
+
+  // check if car_id is integer
+
+  if (isNaN(car_id)) {
+console.log("isNaN", isNaN(car_id));
+  }
+
+  const car = await carModel.findById(car_id).select("name price");
+
+  res.json({ car });
+}
+
+
+
+
+
+exports.findCarByNameAndCityAndPrice = async (req, res) => {
+
+ // const body = req.body;
+
+//  console.log("body", body);
+const name = req.body.name ? req.body.name : "";
+const city = req.body.city ? req.body.city : "";
+const Min_price = req.body.min_price ? req.body.min_price : 0;
+const Max_price = req.body.max_price ? req.body.max_price : 9000000;
+console.log("name", name, "city", city, "price", Min_price);
+
+
+
+
+
+
+    const cars = await carModel
+      .find({
+        $and: [
+          { name: { $regex: name, $options: "i" } },
+          { city: { $regex: city, $options: "i" } },
+         { price: { $gte: Min_price, $lte: Max_price } },
+        ],
+      })
+      .select("name price city");
+
+    res.json({ cars });
+  
+}
+
+
+
+
