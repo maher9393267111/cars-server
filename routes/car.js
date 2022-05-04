@@ -12,6 +12,12 @@ const {
     getAllCars,
     searchCarByCity,
     handleQuery,
+     searchCarByArray,
+    showCars,
+    findFilter,
+    findcarbyCatId  ,
+    findCarById,
+    findCarByNameAndCityAndPrice    ,
     // getAllCategory,
     // updateCategory,
     // deleteCategory,
@@ -116,6 +122,39 @@ router.post("/search-car-by-city", searchCarByCity);
 router.post("/search-car-by-query", handleQuery);
 
 
+
+
+// checboxe cat_name array
+router.post("/search-car-catname", searchCarByArray);
+
+
+
+// show limit 10cars
+
+router.get("/show-cars-limit", showCars);
+
+
+
+
+// find filter
+
+router.get("/find-filter", findFilter);
+
+
+
+// find car by category id
+
+router.get("/find-car-by-cat-id/:cat_id", findcarbyCatId);
+
+
+//find car by id
+
+router.get("/find-car-by-id/:car_id", findCarById);
+
+
+// find car by name and city and price if exist
+
+router.post("/find-car-by-name-city-price", findCarByNameAndCityAndPrice);
 
 
 
